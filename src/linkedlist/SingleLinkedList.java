@@ -1,4 +1,4 @@
-package LinkedList;
+package linkedlist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,6 @@ public class SingleLinkedList {
 		list.add(3);
 		list.prepend(0);
 		list.prepend(0);
-		//list.removeByIndex(2);
-	//	list.insert(2,2);
 		list.removeAdjacentDuplicatates();
 		list.printList();
 	}
@@ -33,7 +31,6 @@ public class SingleLinkedList {
 			tail.next = node;
 			tail = node;
 		}
-		// System.out.println(head);
 		length++;
 	}
 
@@ -55,8 +52,8 @@ public class SingleLinkedList {
 		} else {
 			Node node = new Node(value);
 			Node leader = getNodeByIndex(index - 1);
-            node.next=leader.next;
-            leader.next=node;
+			node.next = leader.next;
+			leader.next = node;
 		}
 		length++;
 
@@ -73,6 +70,7 @@ public class SingleLinkedList {
 	}
 
 	public void printList() {
+		System.out.println(head);
 		List<Integer> list = new ArrayList<>();
 		Node temp = head;
 		while (temp != null) {
@@ -82,29 +80,28 @@ public class SingleLinkedList {
 		System.out.println(list);
 	}
 
-	public Node getNodeByIndex(int index) { 
+	public Node getNodeByIndex(int index) {
 		int in = 0;
 		Node temp = head;
 		while (in != index) {
 			temp = temp.next;
 			in++;
 		}
-//		System.out.println(temp);
 		return temp;
 	}
-	
-	public void removeAdjacentDuplicatates() { // 0 0 1 1 2 3 3   ----> 0 1 2 3
-		
-		Node temp=head;
-		int counter=0;
-		while(temp!=null) {
-			if(temp.value==temp.next.value) {
-				removeByIndex(counter+1);
+
+	public void removeAdjacentDuplicatates() { // 0 0 1 1 2 3 3 ----> 0 1 2 3
+
+		Node temp = head;
+		int counter = 0;
+		while (temp != null) {
+			if (temp.value == temp.next.value) {
+				removeByIndex(counter + 1);
 			}
 			counter++;
-			temp=temp.next;
+			temp = temp.next;
 		}
-		
+
 	}
 
 	class Node {
