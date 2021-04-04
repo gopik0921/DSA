@@ -153,5 +153,117 @@ Fruit fruit = new FruitBuilder()
 
 
 
+JAVA DEVELOPMENT KIT
+
+The Java Development Kit (JDK) is a software development environment used for developing Java applications and applets. It includes the Java Runtime Environment (JRE), an interpreter/loader (Java), a compiler (javac), an archiver (jar), a documentation generator (Javadoc) and other tools needed in Java development.
+
+JAVA RUNTIME ENVIRONMENT
+
+JRE stands for “Java Runtime Environment” and may also be written as “Java RTE.” The Java Runtime Environment provides the minimum requirements for executing a Java application; it consists of the Java Virtual Machine (JVM), core classes, and supporting files.
+
+JAVA VIRTUAL MACHINE
+
+A specification where working of Java Virtual Machine is specified. But implementation provider is independent to choose the algorithm. Its implementation has been provided by Sun and other companies.
+An implementation is a computer program that meets the requirements of the JVM specification
+Runtime Instance Whenever you write java command on the command prompt to run the java class, an instance of JVM is created.
+
+ Method area, Heap area, Stack area, PC Registers, Native method stacks
+ 
+ Execution Engine --Interpreter,Just-In-Time Compiler(JIT),Garbage Collector
+ 
+ Java Native Interface (JNI) 
+ 
+
+AOP Advices::
+
+before--Run advice before the method execution. 
+
+after--Run advice after the method execution, regardless of its outcome.
+
+after-returning--Run advice after the method execution, only if the method completes successfully.
+
+after-throwing--Run advice after the method execution, only if the method exits by throwing an exception
+
+around--Run advice before and after the advised method is invoked.
+
+
+OAuth Types:
+
+Authorization Code::
+
+The application opens a browser to send the user to the OAuth server
+The user sees the authorization prompt and approves the app’s request
+The user is redirected back to the application with an authorization code in the query string
+The application exchanges the authorization code for an access token
+
+
+Client Credentials::
+
+The Client Credentials grant is used when applications request an access token to access their own resources, not on behalf of a user.
+
+
+Device Code::
+
+While the device is waiting for the user to complete the authorization flow on their own computer or phone, the device meanwhile begins polling the token endpoint to request an access token.
+
+
+Refresh Token::
+
+The Refresh Token grant type is used by clients to exchange a refresh token for an access token when the access token has expired.
+
+BeanFactoryPostProcessor operates on bean definition i.e. before the bean instance is getting created it gets executed.
+
+BeanPostProcessor gets executed after bean is instantiated and lifecycle events are called.
+
+
+n<<m ==> n*2^m -- left shift  Ex: 10<<3 = 10*2^3 = 10*8 =80
+
+n>>m ==> n/2^m -- right shift Ex: 20>>3 = 20/2^3 = 20/8 = 2
+
+For positive number, >> and >>> works same  
+
+For negative number, >>> changes parity bit (MSB) to 0 
+
+The logical && operator doesn't check second condition if first condition is false. It checks second condition only if first one is true.
+
+The bitwise & operator always checks both conditions whether first condition is true or false.
+
+
+int a=10;  
+int b=5;  
+int c=20;  
+System.out.println(a<b&&a++<c);//false && true = false  
+System.out.println(a);//10 because second condition is not checked  
+System.out.println(a<b&a++<c);//false && true = false  
+System.out.println(a);//11 because second condition is checked 
+
+
+
+The logical || operator doesn't check second condition if first condition is true. It checks second condition only if first one is false.
+
+The bitwise | operator always checks both conditions whether first condition is true or false.
+
+The bitwise exclusive OR operator (^) compares each bit of its first operand to the corresponding bit of its second operand. If the bit in one of the operands is 0 and the bit in the other operand is 1, the corresponding result bit is set to 1. Otherwise, the corresponding result bit is set to 0.
+
+If we take XOR of zero and some bit, it will return that bit -> 8^0=8
+
+If we take XOR of two same bits, it will return 0 -> 8^8=0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                          
