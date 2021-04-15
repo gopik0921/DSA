@@ -1,5 +1,8 @@
 package leetcode.array;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SingleNumber {
 	//Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.
 	//[4,1,2,1,2] -- 4
@@ -16,6 +19,19 @@ public class SingleNumber {
 	    }
 	    return a;
 	    }
+	   
+	   public int singleNumber1(int[] nums) {
+		    List<Integer> no_duplicate_list = new ArrayList<>();
+
+		    for (int i : nums) {
+		      if (!no_duplicate_list.contains(i)) {
+		        no_duplicate_list.add(i);
+		      } else {
+		        no_duplicate_list.remove(i);
+		      }
+		    }
+		    return no_duplicate_list.get(0);
+		  }
 	   
 //
 //If we take XOR of zero and some bit, it will return that bit

@@ -1,7 +1,9 @@
 package linkedlist;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SingleLinkedList {
 
@@ -14,7 +16,8 @@ public class SingleLinkedList {
 		list.add(3);
 		list.prepend(0);
 		list.prepend(0);
-		list.removeAdjacentDuplicatates();
+		list.reverseList();
+		// list.removeAdjacentDuplicatates();
 		list.printList();
 	}
 
@@ -49,6 +52,8 @@ public class SingleLinkedList {
 	public void insert(int value, int index) {
 		if (index > length) {
 			add(value);
+		} else if (index == 0) {
+			prepend(value);
 		} else {
 			Node node = new Node(value);
 			Node leader = getNodeByIndex(index - 1);
@@ -63,14 +68,17 @@ public class SingleLinkedList {
 		if (index > length) {
 			return;
 		}
-		Node leader = getNodeByIndex(index - 1);
-		Node unWantedNode = leader.next;
-		leader.next = unWantedNode.next;
+		if (index == 0) {
+			head = head.next;
+		} else {
+			Node leader = getNodeByIndex(index - 1);
+			Node unWantedNode = leader.next;
+			leader.next = unWantedNode.next;
+		}
 		length--;
 	}
 
 	public void printList() {
-		System.out.println(head);
 		List<Integer> list = new ArrayList<>();
 		Node temp = head;
 		while (temp != null) {
@@ -102,6 +110,148 @@ public class SingleLinkedList {
 			temp = temp.next;
 		}
 
+	}
+
+	// delete node from node i.e 4->5->1->3 given node 5 to remove then 4->1->3
+	public void deleteNode(Node node) {
+		node.value = node.next.value;
+		node.next = node.next.next;
+	}
+
+	public Node removeNthFromEnd(int n) {
+		Node dummy = new Node(0);
+		dummy.next = head;
+		int length = 0;
+		Node first = head;
+		while (first != null) {
+			length++;
+			first = first.next;
+		}
+		length -= n;
+		first = dummy;
+		while (length > 0) {
+			length--;
+			first = first.next;
+		}
+		first.next = first.next.next;
+		return dummy.next;
+	}
+
+	public Node reverseList() {
+		Node rev = null;
+		Node curr = head;
+		while (curr != null) {
+			Node temp = curr.next;
+			curr.next = rev;
+			rev = curr;
+			curr = temp;
+		}
+		return rev;
+	}
+
+	// 1 3 4 && 1 2 5 ---> 1 1 2 3 4 5
+	public Node mergeTwoListsRecursive(Node l1, Node l2) {
+		if (l1 == null) {
+			return l2;
+		}
+
+		if (l2 == null) {
+			return l1;
+		}
+
+		if (l1.value < l2.value) {
+			l1.next = mergeTwoListsRecursive(l1.next, l2);
+			return l1;
+		} else {
+			l2.next = mergeTwoListsRecursive(l1, l2.next);
+			return l2;
+		}
+	}
+
+	// 1 2 3 4
+	public Node mergeTwoLists(Node l1, Node l2) {
+
+		if (l1 == null && l2 == null) {
+			return null;
+		}
+		if (l1 == null) {
+			return l2;
+		}
+		if (l2 == null) {
+			return l1;
+		}
+
+		Node dummy = new Node(0);
+
+		Node n1 = l1, n2 = l2, curr = dummy;
+
+		while (n1 != null && n2 != null) {
+
+			if (n1.value > n2.value) {
+				curr.next = n2;
+				n2 = n2.next;
+
+			} else {
+				curr.next = n1;
+				n1 = n1.next;
+			}
+			curr = curr.next;
+		}
+
+		if (n1 != null) {
+			curr.next = n1;
+		} else if (n2 != null) {
+			curr.next = n2;
+		}
+
+		return dummy.next;
+	}
+
+	public boolean isPalindrome(Node head) {
+		List<Integer> list = new ArrayList<>();
+		Node temp = head;
+		while (temp != null) {
+			list.add(temp.value);
+			temp = temp.next;
+		}
+		int start = 0, end = list.size() - 1;
+		while (start < end) {
+			if (list.get(start++) != list.get(end--)) {
+				return false;
+			}
+		}
+		return true;
+
+	}
+
+	public boolean hasCycle(Node head) {
+		Set<Node> nodesSeen = new HashSet<>();
+		while (head != null) {
+			if (nodesSeen.contains(head)) {
+				return true;
+			}
+			nodesSeen.add(head);
+			head = head.next;
+		}
+		return false;
+	}
+
+	// Floyd's Cycle Finding Algorithm
+	public boolean hasCycle1(Node head) {
+		if (head == null) {
+			return false;
+		}
+
+		Node slow = head;
+		Node fast = head.next;
+		while (slow != fast) {
+			if (fast == null || fast.next == null) {
+				return false;
+			}
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+		return true;
 	}
 
 	class Node {

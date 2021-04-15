@@ -30,5 +30,19 @@ public class BuyAndSellStock {
 		
 		return profit;
 	}
+	
+	// only one time buy and one time sell  [7,1,5,3,6,4] --> buy on 1(least) sell on 6(highest) --> output 6-1=5
+	public static int maxProfit1(int[] prices) {
+		int minPrice=Integer.MAX_VALUE;
+		int maxProfit=0;
+		for(int i=0;i<prices.length;i++) {
+			if(prices[i]<minPrice) {
+				minPrice=prices[i];
+			}else if(prices[i]-minPrice>maxProfit) {
+				maxProfit=prices[i]-minPrice;
+			}
+		}
+		return maxProfit;
+	}
 
 }
