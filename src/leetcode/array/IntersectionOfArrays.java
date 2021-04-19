@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 //Given two integer arrays nums1 and nums2, return an array of their intersection. Each element in the result must appear as many times as it shows in both arrays and you may return the result in any order.
 // [1, 2, 1, 3] [1, 4, 1, 2] --> [1,1,2]
@@ -31,6 +32,7 @@ public class IntersectionOfArrays {
 			});
 
 		}
+	
 		System.out.println(li);
 		int[] arr = new int[li.size()];
 		int k = 0;

@@ -1,6 +1,10 @@
 package tree;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 //O(log N) -- lookup insert delete
 public class BinarySearchTree {
@@ -25,15 +29,25 @@ public class BinarySearchTree {
 	}
 
 	public static void main(String[] args) {
+		// 9 4 20 1 6 15 25
 		BinarySearchTree tree = new BinarySearchTree();
-		tree.insert(1);
+		tree.insert(30);
+		tree.insert(7);
+		tree.insert(2);
+		tree.insert(18);
+		tree.insert(6);
 		tree.insert(5);
 		tree.insert(4);
-		tree.insert(7);
-		tree.insert(3);
-		tree.insert(10);
-		System.out.println(tree.lookup(17));
-		System.out.println(tree.isValidBST(tree.root));
+
+//		System.out.println(tree.lookup(17));
+//		System.out.println(tree.isValidBST(tree.root));
+		tree.breadthFirstSearch();
+		tree.DFSInOrder();
+		tree.DFSPreOrder();
+		tree.DFSPostOrder();
+		tree.leftView();
+		
+		
 	}
 
 	TreeNode root;
@@ -102,7 +116,7 @@ public class BinarySearchTree {
 	}
 
 	public boolean validate(TreeNode node, Integer low, Integer high) {
-		if (root == null) {
+		if (node == null) {
 			return true;
 		}
 
@@ -112,5 +126,198 @@ public class BinarySearchTree {
 
 		return validate(node.left, low, node.val) && validate(node.right, node.val, high);
 	}
+
+	public boolean isSymmetric(TreeNode root) {
+		return isMirror(root, root);
+	}
+
+	public boolean isMirror(TreeNode t1, TreeNode t2) {
+		if (t1 == null && t2 == null) {
+			return true;
+		}
+		if (t1 == null || t2 == null) {
+			return false;
+		}
+
+		return (t1.val == t2.val) && isMirror(t1.right, t2.left) && isMirror(t1.left, t2.right);
+
+	}
+
+	public boolean isSame(TreeNode t1, TreeNode t2) {
+		if (t1 == null && t2 == null) {
+			return true;
+		}
+		if (t1 == null || t2 == null) {
+			return false;
+		}
+		return (t1.val == t2.val) && isSame(t1.right, t2.right) && isSame(t1.left, t2.left);
+	}
+
+//	Input: root = [3,9,20,null,null,15,7]
+//	Output: [[3],[9,20],[15,7]]
+	public List<List<Integer>> levelOrder(TreeNode root) {
+		List<List<Integer>> output = new ArrayList<>();
+
+		if (root == null) {
+			return output;
+		}
+
+		Queue<TreeNode> q = new LinkedList<>();
+
+		q.offer(root);
+
+		while (!q.isEmpty()) {
+			int level = q.size();
+			TreeNode temp = q.poll();
+			List<Integer> list = new ArrayList<>();
+			for (int i = 0; i < level; i++) {
+				if (temp.left != null) {
+					q.offer(temp.left);
+				}
+				if (temp.right != null) {
+					q.offer(temp.right);
+				}
+				list.add(temp.val);
+			}
+			output.add(list);
+		}
+
+		return output;
+
+	}
+
+	// A height-balanced binary tree is a binary tree in which the depth of the two
+	// subtrees of every node never differs by more than one.
+//	Input: nums = [-10,-3,0,5,9]
+//	Output: [0,-3,9,-10,null,5]
+//	Explanation: [0,-10,5,null,-3,null,9] is also accepted
+
+	public TreeNode sortedArrayToBST(int[] nums) {
+		return insertToSortedArrayBST(nums, 0, nums.length - 1);
+	}
+
+	public TreeNode insertToSortedArrayBST(int[] nums, int start, int end) {
+		if (start > end) {
+			return null;
+		}
+
+		int mid = (start + end) / 2;
+		TreeNode root = new TreeNode(nums[mid]);
+		root.left = insertToSortedArrayBST(nums, start, mid - 1);
+		root.right = insertToSortedArrayBST(nums, mid + 1, end);
+
+		return root;
+	}
+
+	/*
+	 *         9 
+	 *     4       20 
+	 *   1   6  15    25
+	 * 
+	 * BFS = [9,4,20,1,6,15,25]  level order traversal
+	 * 
+	 * DFS(InOrder) = [1 ,4 ,6 ,9 , 15 ,20 ,25]
+	 *
+	 * DFS(PreOder) = [9, 4 , 1 ,6 ,20 , 15, 25] -- easy to recreate tree
+	 *
+	 * DFS(PostOder) = [1, 6 , 4, 15 , 25, 20 ,9]
+	 * 
+	 * 
+	 */
+
+	public void breadthFirstSearch() {
+		List<Integer> list = new ArrayList<>();
+		Queue<TreeNode> q = new LinkedList<>();
+		TreeNode currentNode = root;
+		q.offer(currentNode);
+		while (!q.isEmpty()) {
+			TreeNode temp = q.poll();
+			list.add(temp.val);
+			if (temp.left != null) {
+				q.offer(temp.left);
+			}
+			if (temp.right != null) {
+				q.offer(temp.right);
+			}
+		}
+		System.out.println(list);
+	}
+
+	private void DFSInOrder() {
+		var list = new ArrayList<Integer>();
+		traverseInOrder(root, list);
+		System.out.println(list);
+	}
+
+	private void DFSPreOrder() {
+		var list = new ArrayList<Integer>();
+		traversePreOrder(root, list);
+		System.out.println(list);
+	}
+
+	private void DFSPostOrder() {
+		var list = new ArrayList<Integer>();
+		traversePostOrder(root, list);
+		System.out.println(list);
+	}
+
+	public void traverseInOrder(TreeNode node, List<Integer> list) {
+		if (node.left != null) {
+			traverseInOrder(node.left, list);
+		}
+		list.add(node.val);
+		if (node.right != null) {
+			traverseInOrder(node.right, list);
+		}
+	}
+
+	public void traversePreOrder(TreeNode node, List<Integer> list) {
+		list.add(node.val);
+		if (node.left != null) {
+			traversePreOrder(node.left, list);
+		}
+		if (node.right != null) {
+			traversePreOrder(node.right, list);
+		}
+	}
+
+	public void traversePostOrder(TreeNode node, List<Integer> list) {
+		if (node.left != null) {
+			traversePostOrder(node.left, list);
+		}
+
+		if (node.right != null) {
+			traversePostOrder(node.right, list);
+		}
+		list.add(node.val);
+
+	}
+	
+	public void leftView() {
+		var list=new ArrayList<Integer>();
+	
+		leftViewUtil(root,1,list);
+		
+		System.out.println("left view  "+list);	
+		
+	}
+    int maxLevel=0;
+    
+	private void leftViewUtil(TreeNode node, int level, ArrayList<Integer> list) {
+		if(node==null) {
+			return;
+		}
+		
+		if(maxLevel<level) {
+			list.add(node.val);
+			maxLevel=level;
+		}
+
+		leftViewUtil(node.left,level+1,list);
+		leftViewUtil(node.right,level+1,list);
+		
+		//for rightview interchane above recursive calls
+	}
+	
 
 }
