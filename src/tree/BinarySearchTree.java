@@ -6,6 +6,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/*
+ *  Root is the topmost node of the tree
+    Edge is the link between two nodes
+    Child is a node that has a parent node
+    Parent is a node that has an edge to a child node
+    Leaf is a node that does not have a child node in the tree
+    Height is the length of the longest path to a leaf
+    Depth is the length of the path to its root
+ * 
+ */
+
 //O(log N) -- lookup insert delete
 public class BinarySearchTree {
 
@@ -31,23 +42,23 @@ public class BinarySearchTree {
 	public static void main(String[] args) {
 		// 9 4 20 1 6 15 25
 		BinarySearchTree tree = new BinarySearchTree();
-		tree.insert(30);
-		tree.insert(7);
-		tree.insert(2);
-		tree.insert(18);
-		tree.insert(6);
-		tree.insert(5);
 		tree.insert(4);
+		tree.insert(2);
+		tree.insert(7);
+		tree.insert(1);
+		tree.insert(3);
+		tree.insert(6);
+		tree.insert(9);
 
 //		System.out.println(tree.lookup(17));
 //		System.out.println(tree.isValidBST(tree.root));
-		tree.breadthFirstSearch();
-		tree.DFSInOrder();
-		tree.DFSPreOrder();
-		tree.DFSPostOrder();
-		tree.leftView();
-		
-		
+//		tree.breadthFirstSearch();
+//		tree.DFSInOrder();
+//		tree.DFSPreOrder();
+//		tree.DFSPostOrder();
+//		tree.leftView();
+		tree.invertTree(tree.root);
+
 	}
 
 	TreeNode root;
@@ -111,6 +122,23 @@ public class BinarySearchTree {
 		return Math.max(maxDepth(root.left) + 1, maxDepth(root.right) + 1);
 	}
 
+	public int minDepth(TreeNode root) {
+		if (root == null)
+			return 0;
+
+		int left = 1 + minDepth(root.left);
+		int right = 1 + minDepth(root.right);
+
+		if (left == 1)
+			return right;
+		if (right == 1)
+			return left;
+		else if (left > right)
+			return right;
+		else
+			return left;
+	}
+
 	public boolean isValidBST(TreeNode root) {
 		return validate(root, null, null);
 	}
@@ -168,9 +196,9 @@ public class BinarySearchTree {
 
 		while (!q.isEmpty()) {
 			int level = q.size();
-			TreeNode temp = q.poll();
 			List<Integer> list = new ArrayList<>();
 			for (int i = 0; i < level; i++) {
+				TreeNode temp = q.poll();
 				if (temp.left != null) {
 					q.offer(temp.left);
 				}
@@ -210,11 +238,9 @@ public class BinarySearchTree {
 	}
 
 	/*
-	 *         9 
-	 *     4       20 
-	 *   1   6  15    25
+	 * 9 4 20 1 6 15 25
 	 * 
-	 * BFS = [9,4,20,1,6,15,25]  level order traversal
+	 * BFS = [9,4,20,1,6,15,25] level order traversal
 	 * 
 	 * DFS(InOrder) = [1 ,4 ,6 ,9 , 15 ,20 ,25]
 	 *
@@ -292,32 +318,113 @@ public class BinarySearchTree {
 		list.add(node.val);
 
 	}
-	
+
 	public void leftView() {
-		var list=new ArrayList<Integer>();
-	
-		leftViewUtil(root,1,list);
-		
-		System.out.println("left view  "+list);	
-		
+		var list = new ArrayList<Integer>();
+
+		leftViewUtil(root, 1, list);
+
+		System.out.println("left view  " + list);
+
 	}
-    int maxLevel=0;
-    
+
+	int maxLevel = 0;
+
 	private void leftViewUtil(TreeNode node, int level, ArrayList<Integer> list) {
-		if(node==null) {
+		if (node == null) {
 			return;
 		}
-		
-		if(maxLevel<level) {
+
+		if (maxLevel < level) {
 			list.add(node.val);
-			maxLevel=level;
+			maxLevel = level;
 		}
 
-		leftViewUtil(node.left,level+1,list);
-		leftViewUtil(node.right,level+1,list);
-		
-		//for rightview interchane above recursive calls
-	}
-	
+		leftViewUtil(node.left, level + 1, list);
+		leftViewUtil(node.right, level + 1, list);
 
+		// for rightview interchane above recursive calls
+	}
+
+	Integer flag = null;
+
+	public boolean isValidBSTInorder(TreeNode root) {
+		if (root == null)
+			return true;
+
+		if (!isValidBSTInorder(root.left)) {
+			return false;
+		}
+		if (flag != null && root.val <= flag) { // must and should be <=
+			return false;
+		}
+		flag = root.val;
+
+		return isValidBSTInorder(root.right);
+	}
+
+	public int sumOfLeftLeaves(TreeNode root) {
+		if (root == null)
+			return 0;
+		int sum = 0;
+		if (root.left != null && root.left.left == null && root.left.right == null)
+			sum += root.left.val;
+		return sum + sumOfLeftLeaves(root.left) + sumOfLeftLeaves(root.right);
+
+	}
+
+	public TreeNode invertTree(TreeNode root) {
+		if (root == null) {
+			return null;
+		}
+		TreeNode right = invertTree(root.right);
+		TreeNode left = invertTree(root.left);
+		root.left = right;
+		root.right = left;
+		return root;
+	}
+
+	public TreeNode invertTree1(TreeNode root) {
+		if (root == null)
+			return null;
+		Queue<TreeNode> queue = new LinkedList<TreeNode>();
+		queue.add(root);
+		while (!queue.isEmpty()) {
+			TreeNode current = queue.poll();
+			TreeNode temp = current.left;
+			current.left = current.right;
+			current.right = temp;
+			if (current.left != null)
+				queue.add(current.left);
+			if (current.right != null)
+				queue.add(current.right);
+		}
+		return root;
+	}
+
+	public void flatten(TreeNode root) {
+		root = helperflatten(root);
+	}
+
+	TreeNode helperflatten(TreeNode root) {
+
+		if (root == null) {
+			return null;
+		}
+
+		TreeNode rightNodes = root.right;
+
+		root.right = helperflatten(root.left);
+		root.left = null;
+
+		TreeNode current = root;
+
+		while (current.right != null) {
+			current = current.right;
+		}
+
+		current.right = helperflatten(rightNodes);
+
+		return root;
+	}
 }

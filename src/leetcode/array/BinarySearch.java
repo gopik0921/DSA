@@ -5,10 +5,12 @@ import java.util.Arrays;
 public class BinarySearch {
 
 	public static void main(String[] args) {
-       
+		
 		int[] arr=new int[]{1,4,7,3,54,45,67,9};
 		boolean binarySearch = binarySearch(arr,14);
 		System.out.println(binarySearch);
+		
+		
 		
 	}
 	

@@ -34,7 +34,7 @@ public class RotateMatrix {
 	// 0 1 2 3
 	// 1 4 5 6
 	// 2 7 8 9
-	public static void transpose(int[][] matrix) {
+	public static void transpose(int[][] matrix) { // for n*n matrix only
 		int n = matrix.length;
 
 		for (int i = 0; i < n; i++) {
@@ -44,6 +44,19 @@ public class RotateMatrix {
 				matrix[j][i] = temp;
 			}
 		}
+	}
+	
+	public static int[][] transposeforAll(int[][] matrix) { // for any matrix
+		int R=matrix.length;
+		int C=matrix[0].length;
+		int[][] transpose=new int[C][R];
+		for(int r=0;r<R;r++) {
+			for(int c=0;c<C;c++) {
+				transpose[c][r]=matrix[r][c];
+			}
+		}
+		
+		return transpose;
 	}
 
 }
